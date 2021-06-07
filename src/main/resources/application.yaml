@@ -1,0 +1,22 @@
+
+server:
+  port: 9090
+
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: system
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+logging:
+  io:
+    swagger:
+      models:
+        parameters:
+          AbstractSerializableParameter: error
