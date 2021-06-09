@@ -143,7 +143,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The renter's booking list you were trying to reach is not found"),
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the renter's booking list")
     })
-    @RequestMapping(value = "/bookings-by-renter/renterId", method = RequestMethod.GET)
+    @RequestMapping(value = "/bookings-by-renter/{renterId}", method = RequestMethod.GET)
     public ResponseEntity<Object> getBookingsByRenter(final @ApiParam(value = "renter id to get bookings", required = true) @PathVariable("renterId") Long renterId,
                                                       final @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                       final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
