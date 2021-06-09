@@ -132,8 +132,10 @@ public class CarServiceImpl implements CarService {
             throw new NotFoundException(ValidationConst.CAR_NOT_FOUND, ValidationConst.CAR_NOT_FOUND.message() +
                     ValidationConst.ATTRIBUTE_ID.message() + carId);
         }
+
         //status validation
-        if(status != Constant.CAR_AVAILABLE || status != Constant.CAR_UNAVAILABLE) {
+        if(status != Constant.CAR_AVAILABLE && status != Constant.CAR_UNAVAILABLE) {
+            LOGGER.info("status : "+status);
             throw new NotAcceptableException(ValidationConst.STATUS_NOT_ACCEPTABLE,status + ValidationConst.STATUS_NOT_ACCEPTABLE.message());
         }
         repoCar.setStatus(status);

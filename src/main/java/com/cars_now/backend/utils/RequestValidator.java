@@ -133,7 +133,7 @@ public class RequestValidator {
         // check whether car is existed and available at the booking time.
         if (car==null) {
             throw new NotFoundException(ValidationConst.CAR_NOT_FOUND,
-                    ValidationConst.CAR_OWNER_NOT_FOUND.message() + ValidationConst.ATTRIBUTE_ID + booking.getCarRenterId());
+                    ValidationConst.CAR_NOT_FOUND.message() + ValidationConst.ATTRIBUTE_ID.message() + booking.getCarRenterId());
         }
 
         Calendar cal = Calendar.getInstance();

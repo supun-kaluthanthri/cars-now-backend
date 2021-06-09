@@ -50,14 +50,18 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking createBooking(final Booking booking) throws Exception {
+        LOGGER.info("crreate booking 1");
         final com.cars_now.backend.dto.Renter renter = renterRepository.findByRenterId(booking.getCarRenterId());
         final com.cars_now.backend.dto.Car car = carRepository.findByCarIdAndStatus(booking.getCarId(), Constant.CAR_AVAILABLE);
+        LOGGER.info("before validation");
         requestValidator.validateBookingCreateRequest(booking, renter, car);
-
+        LOGGER.info("ater validation");
         //create a booking with updated status
         final com.cars_now.backend.dto.Booking createdBooking = bookingRepository.save(bookingDtoConverter.bookingCreateRequestToBookingDto(booking, renter, car));
         //updating the car status
+        LOGGER.info("before updating status");
         carService.updateCarStatus(createdBooking.getCar().getCarId(), Constant.CAR_UNAVAILABLE);
+        LOGGER.info("after updating sttus");
         return dtoToResponseConverter.bookingDtoToBookingResponse(createdBooking);
     }
 
@@ -87,8 +91,8 @@ public class BookingServiceImpl implements BookingService {
                     ValidationConst.ATTRIBUTE_ID.message() + bookingId);
         }
         //status validation
-        if(status != Constant.BOOKING_BOOKED || status != Constant.BOOKING_IN_PROGRESS
-                || status != Constant.BOOKING_COMPLETED) {
+        if(status != Constant.BOOKING_BOOKED && status != Constant.BOOKING_IN_PROGRESS
+                && status != Constant.BOOKING_COMPLETED) {
             throw new NotAcceptableException(ValidationConst.STATUS_NOT_ACCEPTABLE,status + ValidationConst.STATUS_NOT_ACCEPTABLE.message());
         }
         repoBooking.setStatus(status);
