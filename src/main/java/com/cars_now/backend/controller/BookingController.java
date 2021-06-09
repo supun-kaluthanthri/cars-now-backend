@@ -210,8 +210,8 @@ public class BookingController {
     })
     @RequestMapping(method = RequestMethod.GET, value = "/get-amount/{bookingId}")
     public ResponseEntity<Object> getAmount(@Valid final @ApiParam(value = "booking id to retrieve", required = true) @PathVariable("bookingId") Long bookingId,
-                                            final @RequestParam(name = "date", required = true) Date returnDate,
-                                            final @RequestParam(name = "totalDistance", required = true) int totalDistance) throws Exception {
+                                            final @RequestParam(name = "return date", required = true) String returnDate,
+                                            final @RequestParam(name = "total distance", required = true) int totalDistance) throws Exception {
         LOGGER.info("Get booking API invoked");
 
         final Double totalAmount = bookingService.calculateAmount(bookingId, returnDate, totalDistance);
@@ -229,10 +229,12 @@ public class BookingController {
     })
     @RequestMapping(value = "/make-payment/{bookingId}", method = RequestMethod.PUT)
     public ResponseEntity<Object> makePayment(final @ApiParam(value = "booking id to update the amount", required = true) @PathVariable("bookingId") Long bookingId,
-                                              final @RequestParam(name = "amount",required = true) Double amount) throws Exception {
+                                              final @RequestParam(name = "return date", required = true) String returnDate,
+                                              final @RequestParam(name = "amount",required = true) Double amount,
+                                              final @RequestParam(name = "total distance", required = true) int totalDistance) throws Exception {
         LOGGER.info("Update booking amount api invoked. ");
 
-        final Booking updatedBooking = bookingService.makePayment(bookingId, amount);
+        final Booking updatedBooking = bookingService.makePayment(bookingId, amount, returnDate,totalDistance);
         return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
     }
 
