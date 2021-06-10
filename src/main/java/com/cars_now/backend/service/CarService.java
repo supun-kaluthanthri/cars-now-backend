@@ -17,4 +17,6 @@ public interface CarService {
     Car updateCarStatus(Long carId, int status) throws Exception;
 
     ResultList<Car> getAllAvailableCars(Integer page, Integer size);
+
+    ResultList<Car> getCarsByCarOwner(Long ownerId, Integer page, Integer size) throws Exception;
 }
