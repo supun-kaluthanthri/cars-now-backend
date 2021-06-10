@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.net.HttpURLConnection;
 import java.util.Date;
 
-@CrossOrigin( origins = "http://localhost:9090")
+@CrossOrigin
 @RestController
 @RequestMapping("/bookings")
 @Api(description = "crud operations for the booking", tags = "booking")
