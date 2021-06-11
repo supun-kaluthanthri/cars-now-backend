@@ -74,6 +74,7 @@ public class DtoToResponseConverter {
         car.setAllowedKmPerDay(createdCar.getAllowedKmPerDay());
         car.setDailyRate(createdCar.getDailyRate());
         car.setAdditionalRatePerKm(createdCar.getAdditionalRatePerKm());
+        car.setImageUrl(createdCar.getImageUrl());
         car.setPassengerLimit(createdCar.getPassengerLimit());
         car.setStatus(createdCar.getStatus());
 

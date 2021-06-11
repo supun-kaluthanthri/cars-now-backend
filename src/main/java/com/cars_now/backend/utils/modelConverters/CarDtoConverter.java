@@ -20,6 +20,7 @@ public class CarDtoConverter {
         repoCar.setDailyRate(car.getDailyRate());
         repoCar.setAdditionalRatePerKm(car.getAdditionalRatePerKm());
         repoCar.setPassengerLimit(car.getPassengerLimit());
+        repoCar.setImageUrl(car.getImageUrl());
         repoCar.setStatus(Constant.CAR_AVAILABLE);
         repoCar.setCarOwner(carOwner);
 
@@ -36,6 +37,7 @@ public class CarDtoConverter {
         repoCar.setDailyRate(car.getDailyRate());
         repoCar.setAdditionalRatePerKm(car.getAdditionalRatePerKm());
         repoCar.setPassengerLimit(car.getPassengerLimit());
+        repoCar.setImageUrl(car.getImageUrl());
         repoCar.setStatus(repoCar.getStatus());
         repoCar.setCarOwner(carOwner);
 

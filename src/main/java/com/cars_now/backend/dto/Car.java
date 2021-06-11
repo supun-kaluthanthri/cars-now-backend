@@ -48,6 +48,9 @@ public class Car implements Serializable {
     @Column(name = "additionalRatePerKm")
     private double additionalRatePerKm;
 
+    @Column(name = "imageUrl")
+    private String imageUrl;
+
     @Column(name = "status")
     private int status;
 
