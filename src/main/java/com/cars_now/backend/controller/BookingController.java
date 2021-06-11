@@ -96,7 +96,7 @@ public class BookingController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(bookingList.getTotalCount()));
-        return new ResponseEntity<>(bookingList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(bookingList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -153,7 +153,7 @@ public class BookingController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(bookingList.getTotalCount()));
-        return new ResponseEntity<>(bookingList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(bookingList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -175,7 +175,7 @@ public class BookingController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(bookingList.getTotalCount()));
-        return new ResponseEntity<>(bookingList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(bookingList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -196,7 +196,7 @@ public class BookingController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(bookingList.getTotalCount()));
-        return new ResponseEntity<>(bookingList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(bookingList, responseHeaders, HttpStatus.OK);
     }
 
 

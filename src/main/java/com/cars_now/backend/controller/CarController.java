@@ -94,7 +94,7 @@ public class CarController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(carList.getTotalCount()));
-        return new ResponseEntity<>(carList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(carList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -150,7 +150,7 @@ public class CarController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(carList.getTotalCount()));
-        return new ResponseEntity<>(carList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(carList, responseHeaders, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all the cars by car owner", notes = "Will retrieve a list of all the cars of the car owner")
@@ -170,6 +170,6 @@ public class CarController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(carList.getTotalCount()));
-        return new ResponseEntity<>(carList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(carList, responseHeaders, HttpStatus.OK);
     }
 }
