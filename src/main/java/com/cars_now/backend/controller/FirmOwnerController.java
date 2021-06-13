@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,11 @@ public class FirmOwnerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FirmOwnerController.class);
 
+    private static final String CREATE_FIRM_OWNER = "hasAuthority('PERMISSION_CREATE_FIRM_OWNER')";
+    private static final String UPDATE_FIRM_OWNER = "hasAuthority('PERMISSION_UPDATE_FIRM_OWNER')";
+    private static final String DELETE_FIRM_OWNER = "hasAuthority('PERMISSION_DELETE_FIRM_OWNER')";
+    private static final String READ_FIRM_OWNER = "hasAuthority('PERMISSION_READ_FIRM_OWNER')";
+
     @Autowired
     private FirmOwnerService firmOwnerService;
 
@@ -36,6 +42,7 @@ public class FirmOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while creating the new firm owner")
     })
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize(CREATE_FIRM_OWNER)
     public ResponseEntity<Object> createFirmOwner(final @ApiParam(value = "Enter necessary details to create a new firm owner", required = true) @RequestBody FirmOwner firmOwner) throws Exception {
         LOGGER.trace("Create firm owner api invoked");
         final FirmOwner createdFirmOwner = firmOwnerService.createFirmOwner(firmOwner);
@@ -52,6 +59,7 @@ public class FirmOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while updating the firm owner")
     })
     @RequestMapping(value = "/{firmOwnerId}", method = RequestMethod.PUT)
+    @PreAuthorize(UPDATE_FIRM_OWNER)
     public ResponseEntity<Object> updateFirmOwner(@Valid final @RequestBody FirmOwner firmOwner, final @ApiParam(value = "firmOwner id to update", required = true) @PathVariable("firmOwnerId") Long firmOwnerId) throws Exception {
         LOGGER.info("Update firmOwner api invoked. ");
 
@@ -69,6 +77,7 @@ public class FirmOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the firm owner")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/{firmOwnerId}")
+    @PreAuthorize(READ_FIRM_OWNER)
     public ResponseEntity<Object> getFirmOwner( @Valid final @ApiParam(value = "firmOwner id to retrieve", required = true) @PathVariable("firmOwnerId") Long firmOwnerId) throws Exception {
         LOGGER.info("Get firmOwner API invoked");
 
@@ -86,6 +95,7 @@ public class FirmOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the firmOwner list")
     })
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize(READ_FIRM_OWNER)
     public ResponseEntity<Object> getAllFirmOwners(final @RequestParam(name = "orderBy", required = false) String orderBy,
                                                 final @RequestParam(name = "direction", required = false) String direction,
                                                 final @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -109,6 +119,7 @@ public class FirmOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while deleting the firmOwner")
     })
     @RequestMapping(method = RequestMethod.DELETE, value = "/{firmOwnerId}")
+    @PreAuthorize(DELETE_FIRM_OWNER)
     public ResponseEntity<Object> deleteFirmOwners(final @ApiParam(value = "firmOwner id you want to delete", required = true) @PathVariable("firmOwnerId") Long firmOwnerId) throws Exception {
         LOGGER.info("Delete firmOwner API invoked");
 

@@ -12,19 +12,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.HttpURLConnection;
 import java.util.Date;
 
-@CrossOrigin( origins = "http://localhost:9090")
+@CrossOrigin
 @RestController
 @RequestMapping("/bookings")
 @Api(description = "crud operations for the booking", tags = "booking")
 public class BookingController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarController.class);
+
+    private static final String CREATE_BOOKING = "hasAuthority('PERMISSION_CREATE_BOOKING')";
+    private static final String UPDATE_BOOKING = "hasAuthority('PERMISSION_UPDATE_BOOKING')";
+    private static final String DELETE_BOOKING = "hasAuthority('PERMISSION_DELETE_BOOKING')";
+    private static final String READ_BOOKING = "hasAuthority('PERMISSION_READ_BOOKING')";
 
     @Autowired
     BookingService bookingService;
@@ -38,6 +44,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while creating the new booking")
     })
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize(CREATE_BOOKING)
     public ResponseEntity<Object> createBooking(final @ApiParam(value = "Enter necessary details to create a new booking", required = true) @RequestBody Booking booking) throws Exception {
         LOGGER.trace("Create booking api invoked");
         final Booking createdBooking = bookingService.createBooking(booking);
@@ -71,6 +78,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the booking")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/{bookingId}")
+    @PreAuthorize(READ_BOOKING)
     public ResponseEntity<Object> getBookingId( @Valid final @ApiParam(value = "booking id to retrieve", required = true) @PathVariable("bookingId") Long bookingId) throws Exception {
         LOGGER.info("Get booking API invoked");
 
@@ -88,6 +96,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the bookings list")
     })
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize(READ_BOOKING)
     public ResponseEntity<Object> getAllBookings(final @RequestParam(name = "page", defaultValue = "0") Integer page,
                                              final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
         LOGGER.info("Get all bookings API invoked");
@@ -109,6 +118,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while deleting the booking")
     })
     @RequestMapping(method = RequestMethod.DELETE, value = "/{bookingId}")
+    @PreAuthorize(DELETE_BOOKING)
     public ResponseEntity<Object> deleteBooking(final @ApiParam(value = "booking id you want to delete", required = true) @PathVariable("bookingId") Long bookingId) throws Exception {
         LOGGER.info("Delete booking API invoked");
 
@@ -144,6 +154,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the renter's booking list")
     })
     @RequestMapping(value = "/bookings-by-renter/renterId", method = RequestMethod.GET)
+    @PreAuthorize(READ_BOOKING)
     public ResponseEntity<Object> getBookingsByRenter(final @ApiParam(value = "renter id to get bookings", required = true) @PathVariable("renterId") Long renterId,
                                                       final @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                       final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
@@ -166,6 +177,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the car's booking list")
     })
     @RequestMapping(value = "/bookings-by-car/{carId}", method = RequestMethod.GET)
+    @PreAuthorize(READ_BOOKING)
     public ResponseEntity<Object> getBookingsByCar(final @ApiParam(value = "car id to get bookings", required = true) @PathVariable("carId") Long carId,
                                                       final @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                       final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
@@ -188,6 +200,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the uncompleted bookings list")
     })
     @RequestMapping(value = "/uncompleted-bookings",method = RequestMethod.GET)
+    @PreAuthorize(READ_BOOKING)
     public ResponseEntity<Object> getAllUncompletedBookings(final @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                  final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
         LOGGER.info("Get all uncompleted bookings API invoked");
@@ -209,6 +222,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the booking's amount")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/get-amount/{bookingId}")
+    @PreAuthorize(READ_BOOKING)
     public ResponseEntity<Object> getAmount(@Valid final @ApiParam(value = "booking id to retrieve", required = true) @PathVariable("bookingId") Long bookingId,
                                             final @RequestParam(name = "date", required = true) Date returnDate,
                                             final @RequestParam(name = "totalDistance", required = true) int totalDistance) throws Exception {
@@ -228,6 +242,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while updating the booking amount")
     })
     @RequestMapping(value = "/make-payment/{bookingId}", method = RequestMethod.PUT)
+    @PreAuthorize(UPDATE_BOOKING)
     public ResponseEntity<Object> makePayment(final @ApiParam(value = "booking id to update the amount", required = true) @PathVariable("bookingId") Long bookingId,
                                               final @RequestParam(name = "amount",required = true) Double amount) throws Exception {
         LOGGER.info("Update booking amount api invoked. ");

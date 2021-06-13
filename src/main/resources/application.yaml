@@ -8,10 +8,22 @@ spring:
     username: system
     password: password
 
+
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
+
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://localhost:9090/oauth/check_token
+#      id: mobile
+    client:
+      client-id: mobile
+      client-secret: pin
 
 
 logging:

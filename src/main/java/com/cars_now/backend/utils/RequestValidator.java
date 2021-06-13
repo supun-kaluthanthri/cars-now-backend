@@ -1,19 +1,18 @@
 package com.cars_now.backend.utils;
 
+import com.cars_now.backend.dto.Users;
 import com.cars_now.backend.exception.*;
 import com.cars_now.backend.model.*;
 import com.cars_now.backend.repository.CarOwnerRepository;
 import com.cars_now.backend.repository.CarRepository;
 import com.cars_now.backend.repository.RenterRepository;
+import com.cars_now.backend.repository.UsersDetailRepository;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Component
@@ -22,9 +21,11 @@ public class RequestValidator {
     @Autowired
     CarOwnerRepository carOwnerRepository;
 
+    @Autowired
+    UsersDetailRepository usersDetailRepository;
 
 
-    private boolean isValidEmailAddress(final String email) {
+    public boolean isValidEmailAddress(final String email) {
         if (!isNullOrEmpty(email)) {
             return EmailValidator.getInstance().isValid(email);
         }
@@ -177,5 +178,25 @@ public class RequestValidator {
 
 
     }
+
+    public void validateUserCreateRequest(UserCreate user) throws Exception {
+
+        Optional<Users> repoUserByEmail = usersDetailRepository.findByEmail(user.getEmail());
+
+        if(repoUserByEmail.isPresent()){
+            throw new AlreadyExistedException(ValidationConst.USER_EMAIL_ALREADY_EXISTED,ValidationConst.USER_EMAIL_ALREADY_EXISTED.message() +
+                    ValidationConst.EMAIL_ID + user.getEmail());
+        }
+
+        Optional<Users> repoUserByUsername = usersDetailRepository.findByUsername(user.getEmail());
+
+        if(repoUserByUsername.isPresent()){
+            throw new AlreadyExistedException(ValidationConst.USERNAME_ALREADY_EXISTED,ValidationConst.USERNAME_ALREADY_EXISTED.message() +
+                    ValidationConst.USERNAME_ID + user.getEmail());
+        }
+
+    }
+
+
 }
 

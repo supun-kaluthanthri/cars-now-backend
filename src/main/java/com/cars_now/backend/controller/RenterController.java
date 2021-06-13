@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,11 @@ public class RenterController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RenterController.class);
 
+    private static final String CREATE_RENTER = "hasAuthority('PERMISSION_CREATE_RENTER')";
+    private static final String UPDATE_RENTER = "hasAuthority('PERMISSION_UPDATE_RENTER')";
+    private static final String DELETE_RENTER = "hasAuthority('PERMISSION_DELETE_RENTER')";
+    private static final String READ_RENTER = "hasAuthority('PERMISSION_READ_RENTER')";
+
     @Autowired
     private RenterService renterService;
 
@@ -36,6 +42,7 @@ public class RenterController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while creating the new renter")
     })
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize(CREATE_RENTER)
     public ResponseEntity<Object> createRenter(final @ApiParam(value = "Enter necessary details to create a new renter", required = true) @RequestBody Renter renter) throws Exception {
         LOGGER.trace("Create renter api invoked");
         final Renter createdRenter = renterService.createRenter(renter);
@@ -52,6 +59,7 @@ public class RenterController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while updating the renter")
     })
     @RequestMapping(value = "/{renterId}", method = RequestMethod.PUT)
+    @PreAuthorize(UPDATE_RENTER)
     public ResponseEntity<Object> updateRenter(@Valid final @RequestBody Renter renter, final @ApiParam(value = "Renter id to update", required = true) @PathVariable("renterId") Long renterId) throws Exception {
         LOGGER.info("Update renter api invoked. ");
 
@@ -69,6 +77,7 @@ public class RenterController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the renter")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/{renterId}")
+    @PreAuthorize(READ_RENTER)
     public ResponseEntity<Object> getRenter( @Valid final @ApiParam(value = "Renter id to retrieve", required = true) @PathVariable("renterId") Long renterId) throws Exception {
         LOGGER.info("Get renter API invoked");
 
@@ -86,6 +95,7 @@ public class RenterController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the renters list")
     })
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize(READ_RENTER)
     public ResponseEntity<Object> getAllRenters(final @RequestParam(name = "orderBy", required = false) String orderBy,
                                                   final @RequestParam(name = "direction", required = false) String direction,
                                                   final @RequestParam(name = "page", defaultValue = "0") Integer page,
@@ -109,6 +119,7 @@ public class RenterController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while deleting the renter")
     })
     @RequestMapping(method = RequestMethod.DELETE, value = "/{renterID}")
+    @PreAuthorize(DELETE_RENTER)
     public ResponseEntity<Object> deleteRenter(final @ApiParam(value = "Renter id you want to delete", required = true) @PathVariable("renterID") Long renterID) throws Exception {
         LOGGER.info("Delete renter API invoked");
 

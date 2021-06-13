@@ -1,7 +1,11 @@
 package com.cars_now.backend.utils;
 
+import com.cars_now.backend.dto.Users;
 import com.cars_now.backend.model.*;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DtoToResponseConverter {
@@ -110,5 +114,31 @@ public class DtoToResponseConverter {
         feedBack.setRenterId(createdFeedback.getRenter().getRenterId());
 
         return feedBack;
+    }
+
+
+    /**
+     * Convert User dto to User model object.
+     */
+    public User userDtoToUserResponse(Users repoUser){
+        final User user =  new User();
+        List<Role> roles = new ArrayList<>();
+        user.setId(repoUser.getId());
+        user.setEmail(repoUser.getEmail());
+        user.setUsername(repoUser.getUsername());
+        user.setPassword(repoUser.getPassword());
+//        user.getRoles().forEach(role -> {
+//            Role responseRole = new Role();
+//            responseRole.setId(role.getId());
+//            responseRole.setName(role.getName());
+//            roles.add(responseRole);
+//        });
+//        user.setRoles(roles);
+        user.setEnabled(repoUser.isEnabled());
+        user.setAccountNonExpired(repoUser.isAccountNonExpired());
+        user.setAccountNonLocked(repoUser.isAccountNonLocked());
+        user.setCredentialsNonExpired(repoUser.isCredentialsNonExpired());
+
+        return user;
     }
 }

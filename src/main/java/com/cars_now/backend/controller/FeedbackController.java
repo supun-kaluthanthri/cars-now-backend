@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +24,11 @@ import java.net.HttpURLConnection;
 @Api(description = "crud operations for the feedback", tags = "feedback")
 public class FeedbackController {
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedbackController.class);
+
+    private static final String CREATE_FEEDBACK = "hasAuthority('PERMISSION_CREATE_FEEDBACK')";
+    private static final String UPDATE_FEEDBACK = "hasAuthority('PERMISSION_UPDATE_FEEDBACK')";
+    private static final String DELETE_FEEDBACK = "hasAuthority('PERMISSION_DELETE_FEEDBACK')";
+    private static final String READ_FEEDBACK = "hasAuthority('PERMISSION_READ_FEEDBACK')";
 
     @Autowired
     FeedbackService feedbackService;
@@ -36,6 +42,7 @@ public class FeedbackController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while creating the new feedback")
     })
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize(CREATE_FEEDBACK)
     public ResponseEntity<Object> createFeedback(final @ApiParam(value = "Enter necessary details to create a new feedback", required = true) @RequestBody Feedback feedback) throws Exception {
         LOGGER.trace("Create feedback api invoked");
         final Feedback createdFeedback = feedbackService.createFeedback(feedback);
@@ -51,6 +58,7 @@ public class FeedbackController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while updating the feedback")
     })
     @RequestMapping(value = "/{feedbackId}", method = RequestMethod.PUT)
+    @PreAuthorize(UPDATE_FEEDBACK)
     public ResponseEntity<Object> updateFeedback(@Valid final @RequestBody Feedback feedback, final @ApiParam(value = "feedback id to update", required = true) @PathVariable("feedbackId") Long feedbackId) throws Exception {
         LOGGER.info("Update feedback api invoked. ");
 
@@ -68,6 +76,7 @@ public class FeedbackController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the feedback")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/{feedbackId}")
+//    @PreAuthorize(READ_FEEDBACK)
     public ResponseEntity<Object> getFeedbackById( @Valid final @ApiParam(value = "feedback id to retrieve", required = true) @PathVariable("feedbackId") Long feedbackId) throws Exception {
         LOGGER.info("Get carOwner API invoked");
 
@@ -85,6 +94,7 @@ public class FeedbackController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the feedbacks list")
     })
     @RequestMapping(method = RequestMethod.GET)
+//    @PreAuthorize(READ_FEEDBACK)
     public ResponseEntity<Object> getAllFeedbacks(final @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                   final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
         LOGGER.info("Get all feedbacks API invoked");
@@ -106,6 +116,7 @@ public class FeedbackController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while deleting the feedback")
     })
     @RequestMapping(method = RequestMethod.DELETE, value = "/{feedbackId}")
+    @PreAuthorize(DELETE_FEEDBACK)
     public ResponseEntity<Object> deleteFeedback(final @ApiParam(value = "feedback id you want to delete", required = true) @PathVariable("feedbackId") Long feedbackId) throws Exception {
         LOGGER.info("Delete feedback API invoked");
 

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,11 @@ public class CarOwnerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarOwnerController.class);
 
+    private static final String CREATE_CAR_OWNER = "hasAuthority('PERMISSION_CREATE_CAR_OWNER')";
+    private static final String UPDATE_CAR_OWNER = "hasAuthority('PERMISSION_UPDATE_CAR_OWNER')";
+    private static final String DELETE_CAR_OWNER = "hasAuthority('PERMISSION_DELETE_CAR_OWNER')";
+    private static final String READ_CAR_OWNER = "hasAuthority('PERMISSION_READ_CAR_OWNER')";
+
     @Autowired
     CarOwnerService carOwnerService;
 
@@ -36,6 +42,7 @@ public class CarOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while creating the new car owner")
     })
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize(CREATE_CAR_OWNER)
     public ResponseEntity<Object> createCarOwner(final @ApiParam(value = "Enter necessary details to create a new car owner", required = true) @RequestBody CarOwner carOwner) throws Exception {
         LOGGER.trace("Create car owner api invoked");
         final CarOwner createdCarOwner = carOwnerService.createCarOwner(carOwner);
@@ -52,6 +59,7 @@ public class CarOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while updating the car owner")
     })
     @RequestMapping(value = "/{carOwnerId}", method = RequestMethod.PUT)
+    @PreAuthorize(UPDATE_CAR_OWNER)
     public ResponseEntity<Object> updateCarOwner(@Valid final @RequestBody CarOwner carOwner, final @ApiParam(value = "carOwner id to update", required = true) @PathVariable("carOwnerId") Long carOwnerId) throws Exception {
         LOGGER.info("Update carOwner api invoked. ");
 
@@ -69,6 +77,7 @@ public class CarOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the car owner")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/{carOwnerId}")
+    @PreAuthorize(READ_CAR_OWNER)
     public ResponseEntity<Object> getCarOwner( @Valid final @ApiParam(value = "carOwner id to retrieve", required = true) @PathVariable("carOwnerId") Long carOwnerId) throws Exception {
         LOGGER.info("Get carOwner API invoked");
 
@@ -86,6 +95,7 @@ public class CarOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the carOwners list")
     })
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize(READ_CAR_OWNER)
     public ResponseEntity<Object> getAllCarOwners(final @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                    final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
         LOGGER.info("Get all carOwners API invoked");
@@ -107,6 +117,7 @@ public class CarOwnerController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while deleting the carOwner")
     })
     @RequestMapping(method = RequestMethod.DELETE, value = "/{carOwnerId}")
+    @PreAuthorize(DELETE_CAR_OWNER)
     public ResponseEntity<Object> deleteCarOwners(final @ApiParam(value = "carOwner id you want to delete", required = true) @PathVariable("carOwnerId") Long carOwnerId) throws Exception {
         LOGGER.info("Delete carOwner API invoked");
 

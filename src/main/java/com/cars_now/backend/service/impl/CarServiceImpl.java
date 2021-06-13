@@ -156,4 +156,27 @@ public class CarServiceImpl implements CarService {
         return carResultList;
     }
 
+    @Override
+    public ResultList<Car> getCarsByCarOwner(Long ownerId, Integer page, Integer size) throws Exception{
+        final ResultList<Car> carResultList = new ResultList<>();
+        final List<Car> carList = new ArrayList<>();
+
+        final com.cars_now.backend.dto.CarOwner repoCarOwner = carOwnerRepository.findByCarOwnerId(ownerId);
+        if(repoCarOwner == null) {
+            throw new NotFoundException(ValidationConst.CAR_OWNER_NOT_FOUND, ValidationConst.CAR_OWNER_NOT_FOUND.message() +
+                    ValidationConst.ATTRIBUTE_ID.message() + ownerId);
+        }
+
+        Page<com.cars_now.backend.dto.Car> carsListItr =  carRepository.findByCarOwner(repoCarOwner, PageRequest.of(page,size));
+
+        for(com.cars_now.backend.dto.Car car : carsListItr) {
+            carList.add(dtoToResponseConverter.carDtoToCarResponse(car));
+        }
+
+        carResultList.setList(carList);
+        carResultList.setTotalCount(carList.size());
+        return carResultList;
+    }
+
+
 }
