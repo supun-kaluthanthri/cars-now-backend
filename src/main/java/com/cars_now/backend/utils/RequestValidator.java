@@ -4,10 +4,10 @@ import com.cars_now.backend.dto.Users;
 import com.cars_now.backend.exception.*;
 import com.cars_now.backend.model.*;
 import com.cars_now.backend.repository.CarOwnerRepository;
-import com.cars_now.backend.repository.CarRepository;
-import com.cars_now.backend.repository.RenterRepository;
 import com.cars_now.backend.repository.UsersDetailRepository;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,6 +17,7 @@ import java.util.*;
 
 @Component
 public class RequestValidator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestValidator.class);
 
     @Autowired
     CarOwnerRepository carOwnerRepository;
@@ -127,14 +128,16 @@ public class RequestValidator {
     public void validateBookingCreateRequest(Booking booking, com.cars_now.backend.dto.Renter renter, com.cars_now.backend.dto.Car car) throws Exception {
         //check whether the renter is existed or not
         if (renter==null) {
+            LOGGER.info("renter is not found");
             throw new NotFoundException(ValidationConst.RENTER_NOT_FOUND,
                     ValidationConst.RENTER_NOT_FOUND.message() + ValidationConst.ATTRIBUTE_ID + booking.getCarRenterId());
         }
 
         // check whether car is existed and available at the booking time.
         if (car==null) {
+            LOGGER.info("car is not found");
             throw new NotFoundException(ValidationConst.CAR_NOT_FOUND,
-                    ValidationConst.CAR_OWNER_NOT_FOUND.message() + ValidationConst.ATTRIBUTE_ID + booking.getCarRenterId());
+                    ValidationConst.CAR_NOT_FOUND.message() + ValidationConst.ATTRIBUTE_ID.message() + booking.getCarRenterId());
         }
 
         Calendar cal = Calendar.getInstance();

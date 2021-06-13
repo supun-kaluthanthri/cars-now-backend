@@ -24,7 +24,7 @@ public interface BookingService {
 
     ResultList<Booking> getAllUncompletedBookings(Integer page, Integer size) throws Exception;
 
-    Double calculateAmount(Long booking, Date returnDate, int totalDistance) throws Exception;
+    Double calculateAmount(Long booking, String returnDate, int totalDistance) throws Exception;
 
-    Booking makePayment(Long bookingId, Double amount) throws Exception;
+    Booking makePayment(Long bookingId, Double amount, String date, int totalDistance) throws Exception;
 }

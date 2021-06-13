@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,14 +51,18 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking createBooking(final Booking booking) throws Exception {
+        LOGGER.info("crreate booking 1");
         final com.cars_now.backend.dto.Renter renter = renterRepository.findByRenterId(booking.getCarRenterId());
         final com.cars_now.backend.dto.Car car = carRepository.findByCarIdAndStatus(booking.getCarId(), Constant.CAR_AVAILABLE);
+        LOGGER.info("before validation");
         requestValidator.validateBookingCreateRequest(booking, renter, car);
-
+        LOGGER.info("ater validation");
         //create a booking with updated status
         final com.cars_now.backend.dto.Booking createdBooking = bookingRepository.save(bookingDtoConverter.bookingCreateRequestToBookingDto(booking, renter, car));
         //updating the car status
+        LOGGER.info("before updating status");
         carService.updateCarStatus(createdBooking.getCar().getCarId(), Constant.CAR_UNAVAILABLE);
+        LOGGER.info("after updating sttus");
         return dtoToResponseConverter.bookingDtoToBookingResponse(createdBooking);
     }
 
@@ -87,8 +92,8 @@ public class BookingServiceImpl implements BookingService {
                     ValidationConst.ATTRIBUTE_ID.message() + bookingId);
         }
         //status validation
-        if(status != Constant.BOOKING_BOOKED || status != Constant.BOOKING_IN_PROGRESS
-                || status != Constant.BOOKING_COMPLETED) {
+        if(status != Constant.BOOKING_BOOKED && status != Constant.BOOKING_IN_PROGRESS
+                && status != Constant.BOOKING_COMPLETED) {
             throw new NotAcceptableException(ValidationConst.STATUS_NOT_ACCEPTABLE,status + ValidationConst.STATUS_NOT_ACCEPTABLE.message());
         }
         repoBooking.setStatus(status);
@@ -194,7 +199,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Double calculateAmount(final Long bookingId, final Date returnDate, int totalDistance) throws Exception {
+    public Double calculateAmount(final Long bookingId, final String returnDateString, int totalDistance) throws Exception {
         double totalAmount = 0;
         double extraCharges = 0;
         double totalAllowedDistance = 0;
@@ -203,6 +208,9 @@ public class BookingServiceImpl implements BookingService {
 
         final com.cars_now.backend.dto.Booking repoBooking = bookingRepository.findByBookingId(bookingId);
 
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date returnDate =  formatter.parse(returnDateString);
+        LOGGER.info("after converting to date obj");
         if(repoBooking == null) {
             throw new NotFoundException(ValidationConst.BOOKING_NOT_FOUND, ValidationConst.BOOKING_NOT_FOUND.message());
         }
@@ -212,7 +220,7 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException(ValidationConst.BOOKING_START_DATE_NOT_ACCEPTABLE,
                     ValidationConst.BOOKING_START_DATE_NOT_ACCEPTABLE.message());
         }
-
+        LOGGER.info("start calculation");
         differenceInTime = returnDate.getTime() -  repoBooking.getBookingStartDate().getTime();
 
         differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
@@ -220,15 +228,18 @@ public class BookingServiceImpl implements BookingService {
         if(totalDistance > totalAllowedDistance ) {
             extraCharges =  repoBooking.getCar().getAdditionalRatePerKm() * (totalDistance - totalAllowedDistance);
         }
-
+        LOGGER.info("calculate amount");
         totalAmount =  repoBooking.getCar().getDailyRate() * differenceInDays + extraCharges;
 
         return totalAmount;
     }
 
     @Override
-    public Booking makePayment(final Long bookingId, final Double amount) throws Exception{
+    public Booking makePayment(final Long bookingId, final Double amount, final String returnDateString, int totalDistance) throws Exception{
         final com.cars_now.backend.dto.Booking booking = bookingRepository.findByBookingId(bookingId);
+
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date returnDate =  formatter.parse(returnDateString);
 
         if (booking == null) {
             throw new NotFoundException(ValidationConst.BOOKING_NOT_FOUND,
@@ -236,7 +247,8 @@ public class BookingServiceImpl implements BookingService {
         }
 
         booking.setAmount(amount);
-
+        booking.setCarReturnDate(returnDate);
+        booking.setTotalDistance(totalDistance);
         final Booking updatedBooking = dtoToResponseConverter.bookingDtoToBookingResponse(bookingRepository.save(booking));
         final Booking updatedStatusBooking = updateBookingStatus(bookingId, Constant.BOOKING_COMPLETED);
         carService.updateCarStatus(updatedStatusBooking.getCarId(), Constant.CAR_AVAILABLE);

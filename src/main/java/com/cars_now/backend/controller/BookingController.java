@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.HttpURLConnection;
-import java.util.Date;
 
 @CrossOrigin
 @RestController
@@ -105,7 +104,7 @@ public class BookingController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(bookingList.getTotalCount()));
-        return new ResponseEntity<>(bookingList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(bookingList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -153,8 +152,8 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The renter's booking list you were trying to reach is not found"),
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the renter's booking list")
     })
-    @RequestMapping(value = "/bookings-by-renter/renterId", method = RequestMethod.GET)
     @PreAuthorize(READ_BOOKING)
+    @RequestMapping(value = "/bookings-by-renter/{renterId}", method = RequestMethod.GET)
     public ResponseEntity<Object> getBookingsByRenter(final @ApiParam(value = "renter id to get bookings", required = true) @PathVariable("renterId") Long renterId,
                                                       final @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                       final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
@@ -164,7 +163,7 @@ public class BookingController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(bookingList.getTotalCount()));
-        return new ResponseEntity<>(bookingList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(bookingList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -187,7 +186,7 @@ public class BookingController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(bookingList.getTotalCount()));
-        return new ResponseEntity<>(bookingList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(bookingList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -209,7 +208,7 @@ public class BookingController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(bookingList.getTotalCount()));
-        return new ResponseEntity<>(bookingList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(bookingList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -224,8 +223,8 @@ public class BookingController {
     @RequestMapping(method = RequestMethod.GET, value = "/get-amount/{bookingId}")
     @PreAuthorize(READ_BOOKING)
     public ResponseEntity<Object> getAmount(@Valid final @ApiParam(value = "booking id to retrieve", required = true) @PathVariable("bookingId") Long bookingId,
-                                            final @RequestParam(name = "date", required = true) Date returnDate,
-                                            final @RequestParam(name = "totalDistance", required = true) int totalDistance) throws Exception {
+                                            final @RequestParam(name = "return date", required = true) String returnDate,
+                                            final @RequestParam(name = "total distance", required = true) int totalDistance) throws Exception {
         LOGGER.info("Get booking API invoked");
 
         final Double totalAmount = bookingService.calculateAmount(bookingId, returnDate, totalDistance);
@@ -244,10 +243,12 @@ public class BookingController {
     @RequestMapping(value = "/make-payment/{bookingId}", method = RequestMethod.PUT)
     @PreAuthorize(UPDATE_BOOKING)
     public ResponseEntity<Object> makePayment(final @ApiParam(value = "booking id to update the amount", required = true) @PathVariable("bookingId") Long bookingId,
-                                              final @RequestParam(name = "amount",required = true) Double amount) throws Exception {
+                                              final @RequestParam(name = "return date", required = true) String returnDate,
+                                              final @RequestParam(name = "amount",required = true) Double amount,
+                                              final @RequestParam(name = "total distance", required = true) int totalDistance) throws Exception {
         LOGGER.info("Update booking amount api invoked. ");
 
-        final Booking updatedBooking = bookingService.makePayment(bookingId, amount);
+        final Booking updatedBooking = bookingService.makePayment(bookingId, amount, returnDate,totalDistance);
         return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
     }
 

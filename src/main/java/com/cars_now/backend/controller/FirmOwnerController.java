@@ -106,7 +106,7 @@ public class FirmOwnerController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(firmOwnerList.getTotalCount()));
-        return new ResponseEntity<>(firmOwnerList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(firmOwnerList, responseHeaders, HttpStatus.OK);
     }
 
 

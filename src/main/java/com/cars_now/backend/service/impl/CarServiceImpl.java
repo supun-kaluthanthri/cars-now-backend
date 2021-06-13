@@ -132,8 +132,10 @@ public class CarServiceImpl implements CarService {
             throw new NotFoundException(ValidationConst.CAR_NOT_FOUND, ValidationConst.CAR_NOT_FOUND.message() +
                     ValidationConst.ATTRIBUTE_ID.message() + carId);
         }
+
         //status validation
-        if(status != Constant.CAR_AVAILABLE || status != Constant.CAR_UNAVAILABLE) {
+        if(status != Constant.CAR_AVAILABLE && status != Constant.CAR_UNAVAILABLE) {
+            LOGGER.info("status : "+status);
             throw new NotAcceptableException(ValidationConst.STATUS_NOT_ACCEPTABLE,status + ValidationConst.STATUS_NOT_ACCEPTABLE.message());
         }
         repoCar.setStatus(status);
@@ -168,15 +170,12 @@ public class CarServiceImpl implements CarService {
         }
 
         Page<com.cars_now.backend.dto.Car> carsListItr =  carRepository.findByCarOwner(repoCarOwner, PageRequest.of(page,size));
-
         for(com.cars_now.backend.dto.Car car : carsListItr) {
             carList.add(dtoToResponseConverter.carDtoToCarResponse(car));
         }
-
         carResultList.setList(carList);
         carResultList.setTotalCount(carList.size());
         return carResultList;
     }
-
 
 }

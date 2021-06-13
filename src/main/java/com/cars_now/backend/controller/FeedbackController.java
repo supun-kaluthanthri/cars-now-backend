@@ -103,7 +103,7 @@ public class FeedbackController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(feedbackList.getTotalCount()));
-        return new ResponseEntity<>(feedbackList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(feedbackList, responseHeaders, HttpStatus.OK);
     }
 
 

@@ -17,6 +17,7 @@ public class Car {
     private int allowedKmPerDay;
     private double dailyRate;
     private double additionalRatePerKm;
+    private String imageUrl;
     private int status;
     private Long carOwnerId;
 }

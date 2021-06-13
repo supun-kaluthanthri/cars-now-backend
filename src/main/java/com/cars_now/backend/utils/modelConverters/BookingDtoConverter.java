@@ -16,7 +16,7 @@ public class BookingDtoConverter {
         final com.cars_now.backend.dto.Booking repoBooking = new com.cars_now.backend.dto.Booking();
         repoBooking.setBookingStartDate(booking.getBookingStartDate());
         repoBooking.setBookingEndDate(booking.getBookingEndDate());
-        repoBooking.setCarReturnDate(booking.getCarReturnDate());
+//        repoBooking.setCarReturnDate(booking.getCarReturnDate());
         repoBooking.setTotalDistance(booking.getTotalDistance());
         repoBooking.setStatus(Constant.BOOKING_BOOKED);
         repoBooking.setAmount(booking.getAmount());

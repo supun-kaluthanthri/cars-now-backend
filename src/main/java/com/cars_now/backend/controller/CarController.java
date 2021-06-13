@@ -104,7 +104,7 @@ public class CarController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(carList.getTotalCount()));
-        return new ResponseEntity<>(carList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(carList, responseHeaders, HttpStatus.OK);
     }
 
 
@@ -163,7 +163,27 @@ public class CarController {
         final HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
         responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(carList.getTotalCount()));
-        return new ResponseEntity<>(carList.getList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(carList, responseHeaders, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get all the cars by car owner", notes = "Will retrieve a list of all the cars of the car owner")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the owner's cars list", response = Car.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the available owner's cars list"),
+            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the available owner's cars list you were trying to reach is forbidden"),
+            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The owner's cars list you were trying to reach is not found"),
+            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the owner's cars list")
+    })
+    @RequestMapping(value = "/cars-by-car-owner/{carOwnerId}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getCarsByCarOwner(final @ApiParam(value = "car owner id", required = true) @PathVariable("carOwnerId") Long carOwnerId,
+                                                    final @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                    final @RequestParam(name = "size", defaultValue = "10") Integer size) throws Exception {
+        LOGGER.info("Get all the  cars of a particular owner API invoked");
+        final ResultList<Car> carList = carService.getCarsByCarOwner(carOwnerId, page, size);
+        final HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(ControllerAttributes.ACCESS_CONTROL_HEADERS.tag(), ControllerAttributes.X_TOTAL_COUNT.tag());
+        responseHeaders.set(ControllerAttributes.X_TOTAL_COUNT.tag(), String.valueOf(carList.getTotalCount()));
+        return new ResponseEntity<>(carList, responseHeaders, HttpStatus.OK);
     }
 
 
