@@ -166,7 +166,7 @@ public class CarController {
         return new ResponseEntity<>(carList, responseHeaders, HttpStatus.OK);
     }
 
-    
+
     @ApiOperation(value = "Get all the cars by car owner", notes = "Will retrieve a list of all the cars of the car owner")
     @ApiResponses(value = {
             @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the owner's cars list", response = Car.class),
