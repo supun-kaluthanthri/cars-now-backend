@@ -4,12 +4,12 @@ server:
 
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:xe
-    username: system
-    password: password
-#    url: jdbc:oracle:thin:@carsnownew_medium?TNS_ADMIN=/home/ta40463/Documents/sampleminiproj/backend/Wallet_carsNowDB
-#    username: admin
-#    password: CarsNow.com2021
+#    url: jdbc:oracle:thin:@localhost:1521:xe
+#    username: system
+#    password: password
+    url: jdbc:oracle:thin:@carsnownew_medium?TNS_ADMIN=/home/ta40463/Documents/sampleminiproj/backend/Wallet_carsNowDB
+    username: admin
+    password: CarsNow.com2021
 
 
 
