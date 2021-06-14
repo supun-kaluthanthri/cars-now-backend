@@ -54,9 +54,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
+        http    .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/users/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/users/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
+                .antMatchers("/oauth/authorize").permitAll()
                 .anyRequest().authenticated();
     }
 

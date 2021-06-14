@@ -23,11 +23,15 @@ spring:
 security:
   oauth2:
     resource:
+
       token-info-uri: http://localhost:9090/oauth/check_token
 #      id: mobile
     client:
       client-id: mobile
       client-secret: pin
+      user-authorization-uri: http://localhost:9090/oauth/authoriza
+      access-token-uri: http://localhost:9090/oauth/token
+
 
 
 logging:
