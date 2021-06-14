@@ -5,6 +5,9 @@ public enum ValidationConst {
     ATTRIBUTE_ID(" for id : ", "ATT1000"),
     EMAIL_ID(" for email : ", "ATT1001"),
     USERNAME_ID(" for username : ", "ATT1002"),
+    USER_ID(" for user id : ", "ATT1003"),
+    RATING(" for rating : ", "ATT1004"),
+
 
     RENTER_NOT_FOUND("Renter is not found", "ERR1000"),
     INVALID_EMAIL("Email is not valid", "ERR1001"),
@@ -22,7 +25,8 @@ public enum ValidationConst {
     USER_NOT_FOUND("User is not found ", "ERR1014"),
     USER_EMAIL_ALREADY_EXISTED("User email is already existed ", "ERR1015"),
     USERNAME_ALREADY_EXISTED("User name is already existed ", "ERR1016"),
-    ROLE_NOT_FOUND("Role is not found ", "ERR1017");
+    ROLE_NOT_FOUND("Role is not found ", "ERR1017"),
+    RATING_NOT_ACCEPTABLE("Rating value must be in between 0 and 10 ", "ERR1018");
 
     private String msg;
     private String code;

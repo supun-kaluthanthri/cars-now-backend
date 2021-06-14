@@ -3,6 +3,7 @@ package com.cars_now.backend.service.impl;
 import com.cars_now.backend.dto.AuthUserDetails;
 import com.cars_now.backend.dto.Users;
 import com.cars_now.backend.exception.NotFoundException;
+import com.cars_now.backend.model.Role;
 import com.cars_now.backend.model.User;
 import com.cars_now.backend.model.UserCreate;
 import com.cars_now.backend.repository.UsersDetailRepository;
@@ -18,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service("userDetailsService")
@@ -94,9 +97,25 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         return dtoToResponseConverter.userDtoToUserResponse(user.get());
     }
 
+    @Override
+    public List<Role> getRolesByUserId(String username) throws Exception{
+        Optional<Users> user = userDetailRepository.findByUsername(username);
 
+        if(!user.isPresent()){
+            throw new NotFoundException(ValidationConst.USER_NOT_FOUND,ValidationConst.USER_NOT_FOUND.message() +
+                    ValidationConst.USERNAME_ID.message() + username);
+        }
 
+        List<Role> roleList = new ArrayList<>();
+        user.get().getRoles().forEach(repoRole -> {
+            Role role = new Role();
+            role.setId(repoRole.getId());
+            role.setName(repoRole.getName());
+            roleList.add(role);
+        });
 
+        return roleList;
+    }
 
 
 }

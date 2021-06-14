@@ -21,6 +21,9 @@ public class Feedback implements Serializable {
     @Column(name =  "message")
     private String message;
 
+    @Column(name = "rating")
+    private Double rating;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "renter")

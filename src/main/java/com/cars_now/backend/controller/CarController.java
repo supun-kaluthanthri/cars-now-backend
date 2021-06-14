@@ -78,7 +78,7 @@ public class CarController {
     })
     @RequestMapping(method = RequestMethod.GET, value = "/{carId}")
     @PreAuthorize(READ_CAR)
-    public ResponseEntity<Object> getCarOwner( @Valid final @ApiParam(value = "car id to retrieve", required = true) @PathVariable("carId") Long carId) throws Exception {
+    public ResponseEntity<Object> getCar( @Valid final @ApiParam(value = "car id to retrieve", required = true) @PathVariable("carId") Long carId) throws Exception {
         LOGGER.info("Get car API invoked");
 
         final Car carResponse = carService.getCarById(carId);

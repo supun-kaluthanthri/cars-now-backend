@@ -200,6 +200,21 @@ public class RequestValidator {
 
     }
 
+    public void validateCreateFeedbackRequest(Feedback feedback) throws Exception{
+
+        if (feedback.getRating() > 10 || feedback.getRating() < 0){
+            throw new NotAcceptableException(ValidationConst.RATING_NOT_ACCEPTABLE, ValidationConst.RATING_NOT_ACCEPTABLE.message() +
+                    ValidationConst.RATING + feedback.getRating());
+        }
+    }
+
+    public void validateUpdateFeedbackRequest(Feedback feedback) throws Exception{
+
+        if (feedback.getRating() > 10 || feedback.getRating() < 0){
+            throw new NotAcceptableException(ValidationConst.RATING_NOT_ACCEPTABLE, ValidationConst.RATING_NOT_ACCEPTABLE.message() +
+                    ValidationConst.RATING + feedback.getRating());
+        }
+    }
 
 }
 

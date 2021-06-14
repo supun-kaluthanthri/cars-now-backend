@@ -1,8 +1,6 @@
 package com.cars_now.backend.controller;
 
-import com.cars_now.backend.model.Feedback;
-import com.cars_now.backend.model.User;
-import com.cars_now.backend.model.UserCreate;
+import com.cars_now.backend.model.*;
 import com.cars_now.backend.service.UserService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -12,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.HttpURLConnection;
+import java.util.List;
 
 @CrossOrigin
 @RequestMapping("/users")
@@ -43,6 +43,36 @@ public class UserController {
     @GetMapping("/test")
     public String getTest(){
         return "saaa";
+    }
+
+
+    @ApiOperation(value = "Gets roles by username", notes = "Enter the username of a particular user you want to retrieve")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the car", response = Car.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the car"),
+            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the car you were trying to reach is forbidden"),
+            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The car you were trying to reach is not found"),
+            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the car")
+    })
+    @RequestMapping(method =  RequestMethod.GET, value = "/roles/{username}")
+    public ResponseEntity<Object> getRolesByUser(@Valid final @ApiParam(value = "username to received roles", required = true) @PathVariable("username") String username) throws Exception {
+        LOGGER.info("get roles by user id API invoked");
+        final List<Role> rolesList = userService.getRolesByUserId(username);
+        return new ResponseEntity<>(rolesList, HttpStatus.OK);
+    }
+
+    @RequestMapping(method =  RequestMethod.GET, value = "/{userId}")
+    public ResponseEntity<Object> getUserById(@Valid final @ApiParam(value = "username to received roles", required = true) @PathVariable("userId") Integer userId) throws Exception {
+        LOGGER.info("get user by user id API invoked");
+        final User user = userService.getUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @RequestMapping(method =  RequestMethod.GET, value = "/username/{userName}")
+    public ResponseEntity<Object> getUserById(@Valid final @ApiParam(value = "username to received roles", required = true) @PathVariable("userName") String userName) throws Exception {
+        LOGGER.info("get user by username API invoked");
+        final User user = userService.getUserByUsername(userName);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 }

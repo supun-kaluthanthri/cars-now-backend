@@ -15,8 +15,8 @@ public class FeedbackDtoConverter {
         com.cars_now.backend.dto.Feedback repoFeedback = new com.cars_now.backend.dto.Feedback();
 
         repoFeedback.setMessage(feedback.getMessage());
+        repoFeedback.setRating(feedback.getRating());
         repoFeedback.setRenter(renter);
-
         return repoFeedback;
     }
 
@@ -24,7 +24,7 @@ public class FeedbackDtoConverter {
                                                                                 final com.cars_now.backend.dto.Feedback repoFeedback) {
 
         repoFeedback.setMessage(feedback.getMessage());
-
+        repoFeedback.setRating(feedback.getRating());
         return repoFeedback;
     }
 

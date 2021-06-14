@@ -7,6 +7,7 @@ import com.cars_now.backend.repository.FeedbackRepository;
 import com.cars_now.backend.repository.RenterRepository;
 import com.cars_now.backend.service.FeedbackService;
 import com.cars_now.backend.utils.DtoToResponseConverter;
+import com.cars_now.backend.utils.RequestValidator;
 import com.cars_now.backend.utils.ResultList;
 import com.cars_now.backend.utils.ValidationConst;
 import com.cars_now.backend.utils.modelConverters.FeedbackDtoConverter;
@@ -36,6 +37,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     DtoToResponseConverter dtoToResponseConverter;
 
+    @Autowired
+    RequestValidator requestValidator;
+
     @Override
     public Feedback createFeedback(final Feedback feedback) throws Exception {
 
@@ -44,6 +48,8 @@ public class FeedbackServiceImpl implements FeedbackService {
             throw new NotFoundException(ValidationConst.RENTER_NOT_FOUND, ValidationConst.RENTER_NOT_FOUND.message());
         }
 
+
+        requestValidator.validateCreateFeedbackRequest(feedback);
         final com.cars_now.backend.dto.Feedback createdFeedback = feedbackRepository.save(feedbackDtoConverter.feedbackCreateRequestToFeedbackDto(feedback, renter));
 
         return dtoToResponseConverter.feedBackDtoToFeedbackResponse(createdFeedback);
@@ -58,6 +64,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                     ValidationConst.ATTRIBUTE_ID.message() + feedbackId);
         }
 
+        requestValidator.validateUpdateFeedbackRequest(feedback);
         final com.cars_now.backend.dto.Feedback updatedFeedback =  feedbackRepository.
                 save(feedbackDtoConverter.feedbackUpdateRequestToFeedbackDto(feedback, repoFeedback));
 

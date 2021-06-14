@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Component
 public class DtoToResponseConverter {
@@ -113,7 +114,7 @@ public class DtoToResponseConverter {
         feedBack.setFeedbackId(createdFeedback.getFeedbackId());
         feedBack.setMessage(createdFeedback.getMessage());
         feedBack.setRenterId(createdFeedback.getRenter().getRenterId());
-
+        feedBack.setRating(createdFeedback.getRating());
         return feedBack;
     }
 
@@ -124,17 +125,24 @@ public class DtoToResponseConverter {
     public User userDtoToUserResponse(Users repoUser){
         final User user =  new User();
         List<Role> roles = new ArrayList<>();
+
         user.setId(repoUser.getId());
         user.setEmail(repoUser.getEmail());
         user.setUsername(repoUser.getUsername());
         user.setPassword(repoUser.getPassword());
-//        user.getRoles().forEach(role -> {
-//            Role responseRole = new Role();
-//            responseRole.setId(role.getId());
-//            responseRole.setName(role.getName());
-//            roles.add(responseRole);
-//        });
-//        user.setRoles(roles);
+
+        System.out.println(repoUser.getRoles());
+
+        if(repoUser.getRoles() != null){
+            repoUser.getRoles().forEach(role -> {
+                Role responseRole = new Role();
+                responseRole.setId(role.getId());
+                responseRole.setName(role.getName());
+                roles.add(responseRole);
+            });
+        }
+
+        user.setRoles(roles);
         user.setEnabled(repoUser.isEnabled());
         user.setAccountNonExpired(repoUser.isAccountNonExpired());
         user.setAccountNonLocked(repoUser.isAccountNonLocked());

@@ -9,4 +9,5 @@ public class Feedback {
     private Long feedbackId;
     private Long renterId;
     private String message;
+    private Double rating;
 }

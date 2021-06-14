@@ -1,6 +1,8 @@
 package com.cars_now.backend.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -8,9 +10,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
-@Data
 public class Users implements Serializable {
 
     @Id
