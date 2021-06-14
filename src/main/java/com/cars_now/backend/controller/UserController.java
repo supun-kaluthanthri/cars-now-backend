@@ -40,27 +40,31 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @GetMapping("/test")
-    public String getTest(){
-        return "saaa";
-    }
-
-
-    @ApiOperation(value = "Gets roles by username", notes = "Enter the username of a particular user you want to retrieve")
+    
+    @ApiOperation(value = "Gets roles by username", notes = "Enter the username of roles you want to retrieve")
     @ApiResponses(value = {
-            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the car", response = Car.class),
-            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the car"),
-            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the car you were trying to reach is forbidden"),
-            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The car you were trying to reach is not found"),
-            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the car")
+            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the roles", response = Car.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the roles"),
+            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the role you were trying to reach is forbidden"),
+            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The role you were trying to reach is not found"),
+            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the role")
     })
     @RequestMapping(method =  RequestMethod.GET, value = "/roles/{username}")
-    public ResponseEntity<Object> getRolesByUser(@Valid final @ApiParam(value = "username to received roles", required = true) @PathVariable("username") String username) throws Exception {
+    public ResponseEntity<Object> getRolesByUsername(@Valid final @ApiParam(value = "username to received roles", required = true) @PathVariable("username") String username) throws Exception {
         LOGGER.info("get roles by user id API invoked");
         final List<Role> rolesList = userService.getRolesByUserId(username);
         return new ResponseEntity<>(rolesList, HttpStatus.OK);
     }
 
+
+    @ApiOperation(value = "Gets user by id", notes = "Enter the id of user you want to retrieve")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the user", response = Car.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the user"),
+            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the user you were trying to reach is forbidden"),
+            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The user you were trying to reach is not found"),
+            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the user")
+    })
     @RequestMapping(method =  RequestMethod.GET, value = "/{userId}")
     public ResponseEntity<Object> getUserById(@Valid final @ApiParam(value = "username to received roles", required = true) @PathVariable("userId") Integer userId) throws Exception {
         LOGGER.info("get user by user id API invoked");
@@ -68,10 +72,19 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @RequestMapping(method =  RequestMethod.GET, value = "/username/{userName}")
-    public ResponseEntity<Object> getUserById(@Valid final @ApiParam(value = "username to received roles", required = true) @PathVariable("userName") String userName) throws Exception {
+
+    @ApiOperation(value = "Gets user by username", notes = "Enter the username of user you want to retrieve")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the user", response = Car.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the user"),
+            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the user you were trying to reach is forbidden"),
+            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The user you were trying to reach is not found"),
+            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the user")
+    })
+    @RequestMapping(method =  RequestMethod.GET, value = "/username/{username}")
+    public ResponseEntity<Object> getUserById(@Valid final @ApiParam(value = "username to received roles", required = true) @PathVariable("username") String username) throws Exception {
         LOGGER.info("get user by username API invoked");
-        final User user = userService.getUserByUsername(userName);
+        final User user = userService.getUserByUsername(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
