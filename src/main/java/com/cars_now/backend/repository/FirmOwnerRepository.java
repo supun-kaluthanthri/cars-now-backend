@@ -4,8 +4,12 @@ import com.cars_now.backend.dto.FirmOwner;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface FirmOwnerRepository extends JpaRepository<FirmOwner, Long> {
 
     FirmOwner findByFirmOwnerId(Long firmOwnerId);
+
+    Optional<FirmOwner> findByUserId(Integer userId);
 }

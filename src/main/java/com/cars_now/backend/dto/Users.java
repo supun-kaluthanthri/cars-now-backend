@@ -1,6 +1,5 @@
 package com.cars_now.backend.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
@@ -14,7 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "users")
-public class Users implements Serializable {
+public class    Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")

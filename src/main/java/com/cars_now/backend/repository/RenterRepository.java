@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface RenterRepository extends JpaRepository<Renter, Long> {
 
     Renter findByRenterId(Long renterId);
+
+    Optional<Renter> findByUserId(Integer userId);
 }

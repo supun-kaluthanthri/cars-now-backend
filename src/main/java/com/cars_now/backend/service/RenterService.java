@@ -14,4 +14,6 @@ public interface RenterService {
     ResultList<Renter> getAllRenters(Integer page, Integer size);
 
     void deleteRenter(Long renterID) throws  Exception;
+
+    Long getRenterId(Integer userId) throws Exception;
 }

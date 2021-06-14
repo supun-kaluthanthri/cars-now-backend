@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RenterServiceImpl implements RenterService {
@@ -98,6 +99,19 @@ public class RenterServiceImpl implements RenterService {
         } else {
             throw new RenterNotFoundException(ValidationConst.RENTER_NOT_FOUND, ValidationConst.RENTER_NOT_FOUND.message() +
                     ValidationConst.ATTRIBUTE_ID.message() + renterId);
+        }
+    }
+
+    @Override
+    public Long getRenterId(Integer userId) throws Exception {
+
+        final Optional<com.cars_now.backend.dto.Renter> renter = renterRepository.findByUserId(userId);
+
+        if (renter.isPresent()) {
+            return renter.get().getRenterId();
+        } else {
+            throw new RenterNotFoundException(ValidationConst.RENTER_NOT_FOUND, ValidationConst.RENTER_NOT_FOUND.message() +
+                    ValidationConst.USER_ID.message() + userId);
         }
     }
 }

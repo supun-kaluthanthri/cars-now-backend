@@ -4,6 +4,8 @@ import com.cars_now.backend.dto.Users;
 import com.cars_now.backend.exception.*;
 import com.cars_now.backend.model.*;
 import com.cars_now.backend.repository.CarOwnerRepository;
+import com.cars_now.backend.repository.FirmOwnerRepository;
+import com.cars_now.backend.repository.RenterRepository;
 import com.cars_now.backend.repository.UsersDetailRepository;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.slf4j.Logger;
@@ -24,6 +26,12 @@ public class RequestValidator {
 
     @Autowired
     UsersDetailRepository usersDetailRepository;
+
+    @Autowired
+    FirmOwnerRepository firmOwnerRepository;
+
+    @Autowired
+    RenterRepository renterRepository;
 
 
     public boolean isValidEmailAddress(final String email) {
@@ -62,6 +70,20 @@ public class RequestValidator {
     }
 
     public void validateRenterCreateRequest(Renter renter) throws Exception{
+
+        if (renter.getUserId() == null) {
+            throw new NotAcceptableException(ValidationConst.USER_ID_NOT_FOUND, ValidationConst.USER_ID_NOT_FOUND.message());
+        }
+
+        if (!usersDetailRepository.findById(renter.getUserId()).isPresent()) {
+            throw new NotFoundException(ValidationConst.USER_NOT_FOUND, ValidationConst.USER_NOT_FOUND.message());
+        }
+
+        if (renterRepository.findByUserId(renter.getUserId()).isPresent()){
+            throw new AlreadyExistedException(ValidationConst.FIRM_OWNER_ALREADY_EXISTED, ValidationConst.FIRM_OWNER_ALREADY_EXISTED.message() +
+                    ValidationConst.USER_ID + renter.getUserId());
+        }
+
         if(!isValidEmailAddress(renter.getEmail())) {
             throw new RenterValidationException(ValidationConst.INVALID_EMAIL, ValidationConst.INVALID_EMAIL.message());
         }
@@ -80,6 +102,20 @@ public class RequestValidator {
     }
 
     public void validateFirmOwnerCreateRequest(FirmOwner firmOwner) throws Exception {
+
+        if (firmOwner.getUserId() == null) {
+            throw new NotAcceptableException(ValidationConst.USER_ID_NOT_FOUND, ValidationConst.USER_ID_NOT_FOUND.message());
+        }
+
+        if (!usersDetailRepository.findById(firmOwner.getUserId()).isPresent()) {
+            throw new NotFoundException(ValidationConst.USER_NOT_FOUND, ValidationConst.USER_NOT_FOUND.message());
+        }
+
+        if (firmOwnerRepository.findByUserId(firmOwner.getUserId()).isPresent()){
+            throw new AlreadyExistedException(ValidationConst.FIRM_OWNER_ALREADY_EXISTED, ValidationConst.FIRM_OWNER_ALREADY_EXISTED.message() +
+                    ValidationConst.USER_ID + firmOwner.getUserId());
+        }
+
         if(!isValidEmailAddress(firmOwner.getEmail())) {
             throw new FirmOwnerValidationException(ValidationConst.INVALID_EMAIL, ValidationConst.INVALID_EMAIL.message());
         }
@@ -92,6 +128,20 @@ public class RequestValidator {
     }
 
     public void validateCarOwnerCreateRequest(CarOwner carOwner) throws Exception{
+
+        if (carOwner.getUserId() == null) {
+            throw new NotAcceptableException(ValidationConst.USER_ID_NOT_FOUND, ValidationConst.USER_ID_NOT_FOUND.message());
+        }
+
+        if (!usersDetailRepository.findById(carOwner.getUserId()).isPresent()) {
+            throw new NotFoundException(ValidationConst.USER_NOT_FOUND, ValidationConst.USER_NOT_FOUND.message());
+        }
+
+        if (carOwnerRepository.findByUserId(carOwner.getUserId()).isPresent()){
+            throw new AlreadyExistedException(ValidationConst.FIRM_OWNER_ALREADY_EXISTED, ValidationConst.FIRM_OWNER_ALREADY_EXISTED.message() +
+                    ValidationConst.USER_ID + carOwner.getUserId());
+        }
+
         if(!isValidEmailAddress(carOwner.getEmail())) {
             throw new CarOwnerValidationException(ValidationConst.INVALID_EMAIL, ValidationConst.INVALID_EMAIL.message());
         }

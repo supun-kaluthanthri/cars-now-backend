@@ -126,4 +126,21 @@ public class RenterController {
         renterService.deleteRenter(renterID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+    @ApiOperation(value = "Gets a renter id", notes = "Enter the user id of a particular renter you want to retrieve")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the renter id", response = Renter.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the renter id"),
+            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the renter id you were trying to reach is forbidden"),
+            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The renter id you were trying to reach is not found"),
+            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the renter id")
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/renter-id/{userId}")
+    public ResponseEntity<Object> getFirmOwnerIdByUserId( @Valid final @ApiParam(value = "userid id to retrieve renter id", required = true) @PathVariable("userId") Integer userId) throws Exception {
+        LOGGER.info("Get renter id API invoked");
+
+        final Long renterId = renterService.getRenterId(userId);
+        return new ResponseEntity<>(renterId, HttpStatus.OK);
+    }
 }

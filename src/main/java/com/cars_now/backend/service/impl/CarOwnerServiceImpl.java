@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarOwnerServiceImpl implements CarOwnerService {
@@ -101,5 +102,15 @@ public class CarOwnerServiceImpl implements CarOwnerService {
         }
     }
 
+    @Override
+    public Long getCarOwnerIdByUserId(Integer userId) throws Exception {
+        final Optional<com.cars_now.backend.dto.CarOwner> carOwner = carOwnerRepository.findByUserId(userId);
 
+        if (carOwner.isPresent()) {
+            return carOwner.get().getCarOwnerId();
+        } else {
+            throw new NotFoundException(ValidationConst.CAR_OWNER_NOT_FOUND, ValidationConst.CAR_OWNER_NOT_FOUND.message() +
+                    ValidationConst.USER_ID.message() + userId);
+        }
+    }
 }

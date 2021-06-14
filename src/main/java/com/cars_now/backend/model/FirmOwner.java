@@ -12,4 +12,5 @@ public class FirmOwner {
     private String firstName;
     private String lastName;
     private String firmAddress;
+    private Integer userId;
 }

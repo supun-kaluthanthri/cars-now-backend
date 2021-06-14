@@ -14,4 +14,6 @@ public interface FirmOwnerService {
     ResultList<FirmOwner> getAllFirmOwner(Integer page, Integer size);
 
     void deleteFirmOwner(Long firmOwnerId) throws Exception;
+
+    Long getFirmOwnerId(Integer userId) throws Exception;
 }

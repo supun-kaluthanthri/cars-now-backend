@@ -124,4 +124,21 @@ public class CarOwnerController {
         carOwnerService.deleteCarOwner(carOwnerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+    @ApiOperation(value = "Gets car owner id", notes = "Enter the user id of a particular car owner you want to retrieve")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the car owner id", response = CarOwner.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the car owner id"),
+            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the car owner id you were trying to reach is forbidden"),
+            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The car owner id you were trying to reach is not found"),
+            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the car owner id")
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/car-owner-id/{userId}")
+    public ResponseEntity<Object> getCarOwnerIdByUserId( @Valid final @ApiParam(value = "userid id to retrieve car owner id", required = true) @PathVariable("userId") Integer userId) throws Exception {
+        LOGGER.info("Get car owner id API invoked");
+
+        final Long carOwnerId = carOwnerService.getCarOwnerIdByUserId(userId);
+        return new ResponseEntity<>(carOwnerId, HttpStatus.OK);
+    }
 }

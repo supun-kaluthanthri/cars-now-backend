@@ -25,6 +25,7 @@ public class DtoToResponseConverter {
         renter.setLicenseNo(repoRenter.getLicenseNo());
         renter.setMobileNo(repoRenter.getMobileNo());
         renter.setNicNo(repoRenter.getNicNo());
+        renter.setUserId(repoRenter.getUserId());
 
         return renter;
     }
@@ -40,7 +41,7 @@ public class DtoToResponseConverter {
         firmOwner.setFirstName(repoFirmOwner.getFirstName());
         firmOwner.setLastName(repoFirmOwner.getLastName());
         firmOwner.setFirmAddress(repoFirmOwner.getFirmAddress());
-
+        firmOwner.setUserId(repoFirmOwner.getUserId());
 
         return firmOwner;
     }
@@ -59,6 +60,7 @@ public class DtoToResponseConverter {
         carOwner.setGender(repoCarOwner.getGender());
         carOwner.setMobileNo(repoCarOwner.getMobileNo());
         carOwner.setNicNo(repoCarOwner.getNicNo());
+        carOwner.setUserId(repoCarOwner.getUserId());
 
         return carOwner;
     }

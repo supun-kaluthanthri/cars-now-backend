@@ -15,4 +15,5 @@ public class CarOwner {
     private String address;
     private String nicNo;
     private String mobileNo;
+    private Integer userId;
 }

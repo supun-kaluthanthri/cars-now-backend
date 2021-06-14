@@ -127,4 +127,21 @@ public class FirmOwnerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+
+    @ApiOperation(value = "Gets a firm owner id ", notes = "Enter the user id of a particular firm owner you want to retrieve")
+    @ApiResponses(value = {
+            @ApiResponse(code = HttpURLConnection.HTTP_OK, message = "Successfully retrieved the firm owner id", response = FirmOwner.class),
+            @ApiResponse(code = HttpURLConnection.HTTP_UNAUTHORIZED, message = "You are not authorized to view the firm owner id"),
+            @ApiResponse(code = HttpURLConnection.HTTP_FORBIDDEN, message = "Accessing the firm owner id you were trying to reach is forbidden"),
+            @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The firm owner id you were trying to reach is not found"),
+            @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the firm owner id")
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/firm-owner-id/{userId}")
+    public ResponseEntity<Object> getFirmOwnerIdByUserId( @Valid final @ApiParam(value = "userid id to retrieve firm owner id", required = true) @PathVariable("userId") Integer userId) throws Exception {
+        LOGGER.info("Get firmOwner id API invoked");
+
+        final Long firmOwnerId = firmOwnerService.getFirmOwnerId(userId);
+        return new ResponseEntity<>(firmOwnerId, HttpStatus.OK);
+    }
+
 }

@@ -14,7 +14,7 @@ public class FirmOwnerDtoConverter {
         repoFirmOwner.setFirstName(firmOwner.getFirstName());
         repoFirmOwner.setLastName(firmOwner.getLastName());
         repoFirmOwner.setFirmAddress(firmOwner.getFirmAddress());
-
+        repoFirmOwner.setUserId(firmOwner.getUserId());
         return repoFirmOwner;
 
     }

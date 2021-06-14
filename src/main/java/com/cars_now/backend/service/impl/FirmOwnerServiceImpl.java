@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FirmOwnerServiceImpl implements FirmOwnerService {
@@ -99,5 +100,17 @@ public class FirmOwnerServiceImpl implements FirmOwnerService {
             throw new NotFoundException(ValidationConst.FIRM_OWNER_NOT_FOUND, ValidationConst.FIRM_OWNER_NOT_FOUND.message() +
                     ValidationConst.ATTRIBUTE_ID.message() + firmOwnerId);
         }
+    }
+
+    @Override
+    public Long getFirmOwnerId(Integer userId) throws Exception{
+        final Optional<com.cars_now.backend.dto.FirmOwner> firmOwner = firmOwnerRepository.findByUserId(userId);
+
+        if(!firmOwner.isPresent()) {
+            throw new NotFoundException(ValidationConst.FIRM_OWNER_NOT_FOUND, ValidationConst.FIRM_OWNER_NOT_FOUND.message() +
+                    ValidationConst.USER_ID.message() + userId);
+        }
+
+        return firmOwner.get().getFirmOwnerId();
     }
 }

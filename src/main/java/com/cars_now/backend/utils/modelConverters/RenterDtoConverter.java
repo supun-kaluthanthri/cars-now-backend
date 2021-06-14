@@ -17,7 +17,7 @@ public class RenterDtoConverter {
         returnRenter.setLicenseNo(renter.getLicenseNo());
         returnRenter.setMobileNo(renter.getMobileNo());
         returnRenter.setNicNo(renter.getNicNo());
-
+        returnRenter.setUserId(renter.getUserId());
         return returnRenter;
     }
 

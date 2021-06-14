@@ -16,7 +16,7 @@ public class CarOwnerDtoConverter {
         repoCarOwner.setAddress(carOwner.getAddress());
         repoCarOwner.setMobileNo(carOwner.getMobileNo());
         repoCarOwner.setNicNo(carOwner.getNicNo());
-
+        repoCarOwner.setUserId(carOwner.getUserId());
         return repoCarOwner;
 
     }

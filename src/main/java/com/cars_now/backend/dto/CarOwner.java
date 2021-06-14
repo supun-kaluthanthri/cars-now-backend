@@ -40,6 +40,9 @@ public class CarOwner implements Serializable {
     @Column(name =  "mobileNo")
     private String mobileNo;
 
+    @Column(name = "userId")
+    private Integer userId;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "carOwner")
     @JsonIgnore
     private List<Car> cars;

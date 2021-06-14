@@ -26,7 +26,11 @@ public enum ValidationConst {
     USER_EMAIL_ALREADY_EXISTED("User email is already existed ", "ERR1015"),
     USERNAME_ALREADY_EXISTED("User name is already existed ", "ERR1016"),
     ROLE_NOT_FOUND("Role is not found ", "ERR1017"),
-    RATING_NOT_ACCEPTABLE("Rating value must be in between 0 and 10 ", "ERR1018");
+    RATING_NOT_ACCEPTABLE("Rating value must be in between 0 and 10 ", "ERR1018"),
+    FIRM_OWNER_ALREADY_EXISTED("Firm owner is already existed with this user id ", "ERR1019"),
+    CAR_OWNER_ALREADY_EXISTED("Car owner is already existed with this user id ", "ERR1020"),
+    RENTER_ALREADY_EXISTED("Renter is already existed with this user id ", "ERR1021"),
+    USER_ID_NOT_FOUND("user id is not found ", "ERR1021");
 
     private String msg;
     private String code;

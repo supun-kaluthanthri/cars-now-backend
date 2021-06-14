@@ -29,5 +29,8 @@ public class FirmOwner implements Serializable {
     @Column(name = "firmAddress")
     private String firmAddress;
 
+    @Column(name = "userId")
+    private Integer userId;
+
 }
 

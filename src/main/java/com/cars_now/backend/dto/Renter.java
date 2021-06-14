@@ -43,6 +43,9 @@ public class Renter implements Serializable {
     @Column(name =  "licenceNo")
     private String licenseNo;
 
+    @Column(name = "userId")
+    private Integer userId;
+
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "renter")
     private List<Booking> bookings;

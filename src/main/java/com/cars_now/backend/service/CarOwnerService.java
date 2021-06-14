@@ -13,4 +13,6 @@ public interface CarOwnerService {
     ResultList<CarOwner> getAllCarOwners(Integer page, Integer size);
 
     void deleteCarOwner(Long carOwnerId) throws Exception;
+
+    Long getCarOwnerIdByUserId(Integer userId) throws Exception;
 }

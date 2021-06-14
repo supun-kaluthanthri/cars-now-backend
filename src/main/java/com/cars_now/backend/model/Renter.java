@@ -15,4 +15,5 @@ public class Renter {
     private String nicNo;
     private String mobileNo;
     private String licenseNo;
+    private Integer userId;
 }
