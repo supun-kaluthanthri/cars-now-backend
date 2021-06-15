@@ -175,7 +175,7 @@ public class CarController {
             @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The owner's cars list you were trying to reach is not found"),
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the owner's cars list")
     })
-    @RequestMapping(value = "/cars-by-car-owner", method = RequestMethod.GET)
+    @RequestMapping(value = "/cars-by-car-owner/{carOwnerId}", method = RequestMethod.GET)
     @PreAuthorize(READ_CAR)
     public ResponseEntity<Object> getCarsByCarOwner(final @ApiParam(value = "car owner id", required = true) @PathVariable("carOwnerId") Long carOwnerId,
                                                     final @RequestParam(name = "page", defaultValue = "0") Integer page,
