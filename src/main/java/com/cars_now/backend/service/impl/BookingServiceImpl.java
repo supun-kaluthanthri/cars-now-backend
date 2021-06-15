@@ -111,6 +111,8 @@ public class BookingServiceImpl implements BookingService {
         }
 
         bookingRepository.delete(booking);
+        //update the car status
+        carService.updateCarStatus(booking.getCar().getCarId(), Constant.CAR_AVAILABLE);
     }
 
 

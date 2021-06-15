@@ -221,7 +221,6 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while retrieving the booking's amount")
     })
     @RequestMapping(method = RequestMethod.GET, value = "/get-amount/{bookingId}")
-    @PreAuthorize(READ_BOOKING)
     public ResponseEntity<Object> getAmount(@Valid final @ApiParam(value = "booking id to retrieve", required = true) @PathVariable("bookingId") Long bookingId,
                                             final @RequestParam(name = "return date", required = true) String returnDate,
                                             final @RequestParam(name = "total distance", required = true) int totalDistance) throws Exception {
