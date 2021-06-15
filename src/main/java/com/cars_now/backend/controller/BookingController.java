@@ -134,7 +134,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_NOT_FOUND, message = "The booking you were trying to update the status is not found"),
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while updating the booking status")
     })
-    @RequestMapping(value = "/update-booking-status/{bookingId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update-booking-status/{bookingId}", method = RequestMethod.POST)
     public ResponseEntity<Object> updateBookingStatus(final @ApiParam(value = "booking id to update the status", required = true) @PathVariable("bookingId") Long bookingId,
                                                   final @RequestParam(name = "status",required = true) String status) throws Exception {
         LOGGER.info("Update booking status api invoked. ");
