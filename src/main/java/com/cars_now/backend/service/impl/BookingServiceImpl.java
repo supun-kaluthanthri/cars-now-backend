@@ -225,12 +225,15 @@ public class BookingServiceImpl implements BookingService {
         LOGGER.info("start calculation");
         differenceInTime = returnDate.getTime() -  repoBooking.getBookingStartDate().getTime();
 
-        differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
+        differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365-6;
+        LOGGER.info("days "+differenceInDays);
         totalAllowedDistance = differenceInDays * repoBooking.getCar().getAllowedKmPerDay();
         if(totalDistance > totalAllowedDistance ) {
             extraCharges =  repoBooking.getCar().getAdditionalRatePerKm() * (totalDistance - totalAllowedDistance);
         }
         LOGGER.info("calculate amount");
+        LOGGER.info("extra charges "+ extraCharges);
+        LOGGER.info("cost "+ repoBooking.getCar().getDailyRate() * differenceInDays);
         totalAmount =  repoBooking.getCar().getDailyRate() * differenceInDays + extraCharges;
 
         return totalAmount;

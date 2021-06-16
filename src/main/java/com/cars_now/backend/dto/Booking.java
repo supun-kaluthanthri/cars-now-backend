@@ -55,4 +55,18 @@ public class Booking implements Serializable {
     @JoinColumn(name = "renter")
     private Renter renter;
 
+    public Booking() {
+    }
+
+    public Booking(Long bookingId, Date bookingStartDate, Date bookingEndDate, Date carReturnDate, int totalDistance, int status, double amount, Car car, Renter renter) {
+        this.bookingId = bookingId;
+        this.bookingStartDate = bookingStartDate;
+        this.bookingEndDate = bookingEndDate;
+        this.carReturnDate = carReturnDate;
+        this.totalDistance = totalDistance;
+        this.status = status;
+        this.amount = amount;
+        this.car = car;
+        this.renter = renter;
+    }
 }

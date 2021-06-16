@@ -1,7 +1,9 @@
 package com.cars_now.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -64,5 +66,24 @@ public class Car implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "car")
     private List<Booking> bookings;
 
+    public Car() {
+    }
 
+    public Car(Long carId, String brand, String model, String modelYear, String fuelType, String carPlateNumber, int passengerLimit,
+               double dailyRate, int allowedKmPerDay, double additionalRatePerKm, String imageUrl, int status, CarOwner carOwner, List<Booking> bookings) {
+        this.carId = carId;
+        this.brand = brand;
+        this.model = model;
+        this.modelYear = modelYear;
+        this.fuelType = fuelType;
+        this.carPlateNumber = carPlateNumber;
+        this.passengerLimit = passengerLimit;
+        this.dailyRate = dailyRate;
+        this.allowedKmPerDay = allowedKmPerDay;
+        this.additionalRatePerKm = additionalRatePerKm;
+        this.imageUrl = imageUrl;
+        this.status = status;
+        this.carOwner = carOwner;
+        this.bookings = bookings;
+    }
 }

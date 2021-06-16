@@ -18,8 +18,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/oauth/authorize").permitAll()
                 .antMatchers("/users/**").permitAll()
                 .antMatchers("/bookings/update-booking-status/**").permitAll()
+                .antMatchers("/bookings/make-payment/**").permitAll()
+                .antMatchers("/bookings/get-amount/**").permitAll()
                 .antMatchers("/cars/update-car-status/**").permitAll()
-                .antMatchers("/cars/get-amount/**").permitAll()
+                .antMatchers("/bookings/**").permitAll()
                 .anyRequest()
                 .authenticated();
     }

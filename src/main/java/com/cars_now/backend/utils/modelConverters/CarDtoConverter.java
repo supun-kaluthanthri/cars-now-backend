@@ -21,7 +21,7 @@ public class CarDtoConverter {
         repoCar.setAdditionalRatePerKm(car.getAdditionalRatePerKm());
         repoCar.setPassengerLimit(car.getPassengerLimit());
         repoCar.setImageUrl(car.getImageUrl());
-        repoCar.setStatus(Constant.CAR_AVAILABLE);
+        repoCar.setStatus(Constant.CAR_UNAVAILABLE);
         repoCar.setCarOwner(carOwner);
 
         return repoCar;

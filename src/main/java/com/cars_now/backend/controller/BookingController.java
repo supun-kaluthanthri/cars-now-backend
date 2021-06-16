@@ -240,7 +240,7 @@ public class BookingController {
             @ApiResponse(code = HttpURLConnection.HTTP_INTERNAL_ERROR, message = "Internal server error occurred while updating the booking amount")
     })
     @RequestMapping(value = "/make-payment/{bookingId}", method = RequestMethod.PUT)
-    @PreAuthorize(UPDATE_BOOKING)
+//    @PreAuthorize(UPDATE_BOOKING)
     public ResponseEntity<Object> makePayment(final @ApiParam(value = "booking id to update the amount", required = true) @PathVariable("bookingId") Long bookingId,
                                               final @RequestParam(name = "return date", required = true) String returnDate,
                                               final @RequestParam(name = "amount",required = true) Double amount,
