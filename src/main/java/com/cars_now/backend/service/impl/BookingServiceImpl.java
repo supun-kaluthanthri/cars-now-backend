@@ -222,10 +222,11 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException(ValidationConst.BOOKING_START_DATE_NOT_ACCEPTABLE,
                     ValidationConst.BOOKING_START_DATE_NOT_ACCEPTABLE.message());
         }
+        LOGGER.info("start date "+repoBooking.getBookingStartDate());
         LOGGER.info("start calculation");
         differenceInTime = returnDate.getTime() -  repoBooking.getBookingStartDate().getTime();
 
-        differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365-6;
+        differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
         LOGGER.info("days "+differenceInDays);
         totalAllowedDistance = differenceInDays * repoBooking.getCar().getAllowedKmPerDay();
         if(totalDistance > totalAllowedDistance ) {
